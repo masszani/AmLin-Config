@@ -1,0 +1,44 @@
+server {
+            listen   127.0.0.1:8080;
+ 
+   server_name aws.emzed.org;
+    access_log /srv/www/wordpress/logs/access.log;
+    error_log /srv/www/wordpress/logs/error.log;
+    root /srv/www/wordpress/public_html;
+ 
+    location / {
+        index index.php;
+    }
+ 
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+ 
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+ 
+#    location / {
+#        try_files $uri $uri/ /index.php;
+#    }
+ 
+    location ~ \.php$ {
+        include /etc/nginx/fastcgi_params;
+        fastcgi_pass  127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME /srv/www/wordpress/public_html$fastcgi_script_name;
+    }
+ 
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+        expires max;
+        log_not_found off;
+    }
+ 
+    location ~ /\.ht {
+        deny  all;
+    }
+}
+
